@@ -2092,7 +2092,6 @@ class FabrikFEModelForm extends FabModelForm
 			{
 				JError::raiseNotice(500, 'Audit didnt save');
 			}
-
 		}
 		$app = JFactory::getApplication();
 		$this->getGroupsHiarachy();

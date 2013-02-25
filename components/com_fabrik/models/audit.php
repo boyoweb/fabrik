@@ -46,6 +46,30 @@ class FabrikFEModelAudit extends FabModelForm
 		return $audit->store();
 	}
 
+	public function storeDelete($listModel, $groupedRows)
+	{
+		$user = JFactory::getUser();
+		foreach ($groupedRows as $rows)
+		{
+			foreach ($rows as $row)
+			{
+				$audit = $this->getTable();
+				$data = array();
+				$data['data'] = serialize($row);
+				$data['listid'] = $listModel->getId();
+				$data['rowid'] = $row->__pk_val;
+				$data['userid'] = $user->get('id');
+				$data['action'] = 'delete';
+				$audit->bind($data);
+				if (!$audit->store())
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * Get the JTable
 	 *

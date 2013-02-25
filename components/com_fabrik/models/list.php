@@ -7318,10 +7318,10 @@ class FabrikFEModelList extends JModelForm
 	}
 
 	/**
-	 * Deletes records from a table
+	 * Deletes records from a List
 	 *
-	 * @param   string  &$ids  key value to delete
-	 * @param   string  $key   key to use (leave empty to default to the table's key)
+	 * @param   string  &$ids  Key value to delete
+	 * @param   string  $key   Key to use (leave empty to default to the table's key)
 	 *
 	 * @return  string	error message
 	 */
@@ -7444,6 +7444,14 @@ class FabrikFEModelList extends JModelForm
 			return;
 		}
 		$query = $db->getQuery(true);
+
+		$audit = JModel::getInstance('Audit', 'FabrikFEModel');
+
+		if (!$audit->storeDelete($this, $rows))
+		{
+			JError::raiseNotice(500, 'Audit didnt save');
+		}
+
 		$query->delete($table->db_table_name)->where($key . ' IN (' . $val . ')');
 		$db->setQuery($query);
 		if (!$db->query())
